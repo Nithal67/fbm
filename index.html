@@ -1,0 +1,860 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>UDCF - Union Démocratique des Cantons Français</title>
+  <style>
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html, body {
+  font-family: 'Inter', sans-serif;
+  scroll-behavior: auto;
+  background: url('fond.jpg') no-repeat center center;
+  position: relative;
+  padding-top: 105px;
+  background-attachment: fixed;
+  background-size: cover;
+
+}
+
+/* Deux reflets verts animés */
+body::before,
+body::after {
+  content: "";
+  position: absolute;
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: -1;
+  opacity: 0.5;
+  filter: blur(100px);
+  transform: scale(1.2);
+  animation: floatGlow 8s ease-in-out infinite alternate;
+}
+
+body::before {
+  top: -200px;
+  left: -200px;
+  width: 600px;
+  height: 600px;
+  background: rgba(0, 255, 120, 0.25);
+}
+
+body::after {
+  bottom: -150px;
+  right: -150px;
+  width: 500px;
+  height: 500px;
+  background: rgba(0, 255, 120, 0.2);
+}
+
+/* Animation de "respiration" */
+@keyframes floatGlow {
+  0% {
+    transform: scale(1.1) translateY(0);
+    opacity: 0.4;
+  }
+  100% {
+    transform: scale(1.3) translateY(20px);
+    opacity: 0.6;
+  }
+}
+
+/* Intro plein écran */
+.intro {
+  height: 100vh;
+  width: 100vw;
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 1000;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: radial-gradient(circle, #000 0%, #111 100%);
+  animation: fadeOut 1s ease-in-out 3s forwards;
+}
+
+.intro img {
+  width: 100vw;
+  height: 100vh;
+  object-fit: cover;
+  animation: scaleIn 2s ease-out;
+  filter: brightness(0.7);
+}
+
+/* Animations */
+@keyframes fadeOut {
+  to {
+    opacity: 0;
+    visibility: hidden;
+  }
+}
+
+@keyframes scaleIn {
+  from {
+    transform: scale(1.1);
+    opacity: 0;
+  }
+  to {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+/* Conteneur */
+.container {
+  max-width: 1200px;
+  margin: auto;
+  padding: 2rem;
+}
+
+header {
+  background: #003366;
+  color: white;
+  padding: 2rem;
+  position: fixed;
+  width: 100%;
+  top: 0;
+  transition: transform 0.4s ease; /* <-- ici */
+  z-index: 999;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  border-bottom: 4px solid #00ff88;
+  border-radius: 0 0 20px 20px;
+  box-shadow: 0 0 10px #00ff88, 0 0 30px rgba(0, 255, 136, 0.3);
+  font-family: 'Orbitron', sans-serif;
+  text-align: center;
+  transform: translateY(0); /* état initial */
+}
+
+header.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+header h1 {
+  font-size: 2.5rem;
+  font-weight: 700;
+}
+
+header img.logo {
+  height: 60px;
+  margin-right: 1rem;
+  transition: transform 0.3s ease;
+  filter: drop-shadow(0 0 5px rgba(255, 255, 255, 0.5));
+}
+
+header img.logo:hover {
+  transform: scale(1.1) rotate(-3deg);
+}
+
+#main-header.hide-on-scroll {
+  transform: translateY(-110%); /* pour bien sortir complètement */
+  /* pas besoin de transition ici car elle est déjà sur l’élément principal */
+}
+
+.logo-animation {
+  animation: fadeInScale 1.5s ease forwards;
+  opacity: 0;
+}
+
+@keyframes fadeInScale {
+  from {
+    opacity: 0;
+    transform: scale(0.8);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+/* Assure que tous les éléments dans nav sont alignés */
+nav {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  background-color: #004080;
+  box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+}
+
+nav a,
+nav .dropdown-toggle {
+  padding: 1rem 1.5rem;
+  color: white;
+  text-decoration: none;
+  font-weight: bold;
+  transition: background 0.3s, border-bottom 0.3s;
+  border-bottom: 3px solid transparent;
+  display: inline-block;
+  position: relative;
+}
+
+nav a:hover,
+nav a.active,
+nav .dropdown-toggle:hover {
+  background-color: #002147;
+  border-bottom: 3px solid #ffd60a;
+}
+
+/* Dropdown structure */
+.dropdown {
+  position: relative;
+}
+
+/* Sous-menu */
+.dropdown-menu {
+  display: none;
+  position: absolute;
+  top: 100%;
+  left: 0;
+  background: #004080; /* vert sombre + opacité */
+  border-radius: 12px;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+  z-index: 999;
+  min-width: 200px;
+  flex-direction: column;
+}
+
+.dropdown-menu a {
+  padding: 0.8rem 1.2rem;
+  color: white;
+  text-decoration: none;
+  font-weight: 500;
+  transition: background 0.3s;
+}
+
+.dropdown-menu a:hover {
+  background-color: #00ff9d;
+  color: #002147;
+}
+
+/* Affiche le menu au survol */
+.dropdown:hover .dropdown-menu {
+  display: flex;
+}
+
+/* Sections */
+.tab-content {
+  display: none;
+  padding: 2.5rem;
+  background: white;
+  border-radius: 16px;
+  margin: 2rem auto;
+  box-shadow: 0 6px 20px rgba(0,0,0,0.07);
+  max-width: 1000px;
+  animation: fadeInSection 0.6s ease;
+  position: relative;
+  z-index: 1;
+}
+
+.tab-content.active {
+  display: block;
+}
+
+@keyframes fadeInSection {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+h2 {
+  color: #003366;
+  font-size: 2.2rem;
+  margin-bottom: 1rem;
+}
+
+h3 {
+  color: #004080;
+  margin-top: 1.5rem;
+  font-size: 1.5rem;
+}
+
+ul {
+  margin-left: 1.5rem;
+  margin-bottom: 1rem;
+  list-style: disc;
+}
+
+blockquote {
+  margin: 1.5rem 0;
+  padding: 1rem 1.5rem;
+  border-left: 5px solid #fcbf49;
+  background-color: #f9f9f9;
+  font-style: italic;
+  color: #555;
+  border-radius: 8px;
+}
+
+.uniform-symbols-images {
+  display: flex;
+  gap: 2rem;
+  margin-top: 1.5rem;
+  justify-content: center;
+  flex-wrap: wrap; /* pour mobile */
+}
+
+.uniform-symbols-images .image-block {
+  text-align: center;
+  max-width: 200px;
+}
+
+.uniform-symbols-images img {
+  width: 100%;
+  height: auto;
+  border-radius: 10px;
+  box-shadow: 0 0 10px rgba(0, 255, 136, 0.5);
+}
+
+.uniform-symbols-images p {
+  margin-top: 0.5rem;
+  font-weight: 600;
+  color: #003366;
+  font-family: 'Orbitron', sans-serif;
+}
+
+/* Équipe */
+.team-member {
+  display: flex;
+  align-items: center;
+  background: #ffffff;
+  border-radius: 16px;
+  padding: 1.5rem;
+  margin-bottom: 2rem;
+  box-shadow: 0 6px 15px rgba(0,0,0,0.05);
+  transition: all 0.3s ease;
+}
+
+.team-member:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 8px 20px rgba(0,0,0,0.08);
+}
+
+.team-member img {
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+  object-fit: cover;
+  margin-right: 1.5rem;
+  border: 3px solid #fcbf49;
+}
+
+/* Événements */
+.event {
+  background: #ffffff;
+  padding: 1.25rem;
+  margin-bottom: 1.5rem;
+  border-left: 5px solid #fcbf49;
+  border-radius: 12px;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+}
+
+/* Images */
+img {
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+  max-width: 100%;
+  height: auto;
+  margin-bottom: 1rem;
+}
+
+/* Footer */
+footer {
+  background-color: #002147;
+  color: white;
+  padding: 2rem;
+  text-align: center;
+  margin-top: 4rem;
+  font-size: 0.9rem;
+  border-top: 4px solid #fcbf49;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  header {
+    flex-direction: column;
+    text-align: center;
+  }
+
+  nav {
+    flex-direction: column;
+  }
+
+  nav a {
+    width: 100%;
+    text-align: center;
+    border-bottom: 1px solid rgba(255,255,255,0.1);
+  }
+
+  .team-member {
+    flex-direction: column;
+    text-align: center;
+  }
+
+  .team-member img {
+    margin-bottom: 1rem;
+  }
+}
+</style>
+</head>
+<body>
+  <div class="intro" id="intro">
+    <img src="drapeau-udcf.png" alt="Drapeau de l'UDCF">
+  </div>
+
+  <header id="main-header">
+    <img src="drapeau-udcf.png" alt="Logo UDCF" class="logo"/>
+    <div class="logo-animation">
+      <h1>Union Démocratique des Cantons Français (UDCF)</h1>
+      <p><em>"Pour la France : soyons unis, soyons Français"</em></p>
+      <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&family=Orbitron:wght@500;700&display=swap" rel="stylesheet">
+    </div>
+  </header>
+
+  <nav>
+  <a href="#" onclick="showTab('accueil')">Accueil</a>
+  <a href="#" onclick="showTab('presentation')">Présentation</a>
+
+  <div class="dropdown">
+    <a href="#" class="dropdown-toggle">Programme ▾</a>
+    <div class="dropdown-menu">
+      <a href="#" onclick="showTab('programme')">Général</a>
+      <a href="#" onclick="showTab('SIRRAT')">SIRRAT</a>
+      <a href="#" onclick="showTab('CMN-CRO')">CMN / CRO</a>
+      <a href="#" onclick="showTab('autres')">Autres</a>
+      <a href="#" onclick="showTab('equipe')">L'équipe</a>
+    </div>
+  </div>
+
+  <a href="#" onclick="showTab('manifestations')">Manifestations</a>
+  <a href="#" onclick="showTab('rejoindre')">Nous rejoindre</a>
+</nav>
+
+  <div id="accueil" class="tab-content active">
+    <h2>Bienvenue à l'UDCF</h2>
+    <p>Retrouvez ici quelques visuels clés du mouvement :</p>
+    <img src="flyer.png" alt="Flyer UDCF" style="width:100%; max-width:400px; margin-bottom:1rem;">
+    <img src="meeting1.jpg" alt="Photo meeting" style="width:100%; max-width:400px;">
+  </div>
+
+  <div id="presentation" class="tab-content">
+    <h2>Présentation de l'UDCF</h2>
+    <p><em>"Pour la France : soyons unis, soyons Français."</em></p>
+    <section>
+      <p>L’Union Démocratique des Cantons Français (UDCF) est un mouvement politique citoyen et populaire, né de la volonté de rendre à la France sa force, sa dignité et sa cohésion territoriale. Nous croyons en une démocratie plus proche du peuple, plus juste, et plus ancrée dans la réalité locale.</p>
+      <blockquote><strong>Notre ambition :</strong> rebâtir la République pour qu’elle serve réellement les Français.</blockquote>
+      <h3>🇫🇷 Ce que nous défendons :</h3>
+      <ul>
+        <li>Une refondation démocratique à travers la VIe République, moderne, équitable et participative.</li>
+      <li>Un nouveau modèle territorial : la France des cantons, regroupements de communes pour des décisions locales efficaces.</li>
+      <li>Une France forte, avec une justice sociale réelle, un SMIC revalorisé, et une industrie relancée.</li>
+      <li>Un accès simplifié à la formation, à l’emploi, à la mobilité et aux services publics.</li>
+      <li>Une relocalisation et une relance de l’économie : textile, métallurgie, agriculture naturelle, mécanique, etc.</li>
+      <li>Une transition énergétique pragmatique (hydrogène, GNC, éthanol...) sans dogmatisme.</li>
+      <li>Une politique écologique du concret : plus de nature, de transports doux et de sobriété intelligente.</li>
+      <li>Une reconnaissance des identités régionales et ultramarines, dans le respect de la nation.</li>
+      <li>Un service citoyen repensé pour former, protéger et unir les jeunes générations.</li>
+      <li>Une France souveraine, où les décisions ne viennent plus de Paris mais du peuple.</li>
+    </ul>
+      <h3>🔵 Un mouvement pour tous</h3>
+      <p>L’UDCF rassemble ouvriers, étudiants, retraités, chefs d’entreprise, citoyens de tous horizons. Ce mouvement est le vôtre.</p>
+      <h3>✊ Notre mission</h3>
+      <p><strong>Un nouveau modèle français : local, libre et solidaire.</strong></p>
+      <p>Avec des institutions rénovées, un tissu économique fort, et une France réconciliée, tout devient possible.</p>
+      <h3>🔗 Rejoignez-nous</h3>
+      <p>Participez à une nouvelle page de l’histoire. Adhérez à l’UDCF, bâtissez votre canton, engagez-vous pour la France !</p>
+    </section>
+  </div>
+
+  <div id="equipe" class="tab-content">
+    <h2>L'équipe</h2>
+    <div class="team-member">
+      <img src="président.jpeg" alt="Président">
+      <div>
+        <strong>Thoma Nathan</strong><br/>
+        Président fondateur
+      </div>
+    </div>
+    <div class="team-member">
+      <img src="porte-parole.jpg" alt="Porte-parole">
+      <div>
+        <strong>Marie Lefevre</strong><br/>
+        Porte-parole nationale
+      </div>
+    </div>
+  </div>
+
+  <div id="SIRRAT" class="tab-content">
+    <h2>Section d’Intervention et de Résilience Rapide de l’Armée de Terre</h2>
+<p><em>🇫🇷 SIRRAT</em></p>
+
+<ol style="list-style: none; padding-left: 0;">
+  <li>
+    <h3>🔰 Présentation Générale</h3>
+    <ul>
+      <li>La SIRRAT est un corps d’élite unique de l’Armée de Terre française, créé légalement sous mandat républicain suite à l’arrivée au pouvoir démocratique de l’UDCF.</li>
+      <li>Elle incarne une nouvelle doctrine militaire française : polyvalente, autonome, ultraréactive.</li>
+      <li>Inspirée des forces spéciales, de la Légion étrangère, et des groupes de guérilla urbaine modernes, la SIRRAT se distingue par sa résilience extrême, son adaptabilité à tous les théâtres d’opération, et sa fraternité de combat indéfectible.</li>
+    </ul>
+  </li>
+  <li>
+    <h3>🛡️ Valeurs Fondamentales</h3>
+    <ul>
+      <li>Résilience absolue : Les soldats sont formés pour survivre, combattre et triompher dans toutes les conditions.</li>
+      <li>Loyauté et Fraternité : « On n’abandonne jamais un camarade » — l’un des principes sacrés de la section.</li>
+      <li>Polyvalence opérationnelle : Chaque opérateur peut remplir plusieurs rôles selon la situation.</li>
+      <li>  Éthique et discipline : Droits humains, règles d'engagement strictes et honneur du drapeau.</li>
+    </ul>
+  </li>
+  <li>
+    <h3>🌍 Recrutement & Ouverture</h3>
+    <ul>
+      <li>  Ouvert à tous : Citoyens français et étrangers volontaires, sur le modèle de la Légion étrangère, peuvent postuler à condition de passer les tests rigoureux.</li>
+      <li>Redemption et mérite : La SIRRAT peut offrir une seconde chance à ceux qui cherchent à se racheter par l’honneur et le service.</li>
+      <li>L’identité de la SIRRAT repose sur une diversité unifiée : quelles que soient l’origine, la culture ou la langue, l’uniforme lie tous les membres dans un seul corps.</li>
+    </ul>
+  </li>
+  <li>
+    <h3>🛠️ Organisation Structurée et Multicorps</h3>
+    <ul>
+      <li>La SIRRAT est structurée en plusieurs branches complémentaires :</li>
+      <li>    Infanterie spéciale : cœur de la SIRRAT, experte en guérilla urbaine, combat rapproché, infiltration et reconnaissance longue durée.</li>
+      <li>Section motorisée et blindée : équipées de blindés légers, MRAP, VBL, et véhicules tactiques rapides pour l’appui lourd et les raids profonds.</li>
+      <li>Branche aérienne : drones de combat, drones cargo, hélicoptères légers et unités d’appui aéroporté.</li>
+      <li> Unité SIRRAT-I : spécialisée dans la protection du territoire français (missions de type Sentinelle, contre-terrorisme, actions préventives).</li>
+    </ul>
+  </li>
+  <li>
+    <h3>
+⚔️ Capacités Opérationnelles Uniques</h3>
+    <ul>
+      <li>La SIRRAT est conçue pour opérer dans tous les environnements, même les plus extrêmes :</li>
+      <li>Parachutages de haute altitude en pleine tempête ou en terrain désertique.</li>
+      <li>Opérations de survie et de combat en jungle, désert de glace, montagnes hostiles ou zones inondées.</li>
+      <li>Engagements en conditions extrêmes : ouragans, tempêtes de sable, conflits urbains sous feu constant.</li>
+      <li>Chaque opérateur est entraîné à survivre seul s’il le faut, à improviser, à infiltrer, à frapper, et à revenir.</li>
+    </ul>
+    <div class="uniform-symbols-images">
+  <div class="image-block">
+    <img src="SIRRAT.png" alt="Tenue de garnison SIRRAT-I">
+    <p>Tenue d'OPEX / SIRRAT-I</p>
+  </div>
+  <div class="image-block">
+    <img src="logoSIRRAT.png" alt="Insigne SIRRAT">
+    <p>Insigne SIRRAT</p>
+  </div>
+</div>
+  </li>
+  <li>
+    <h3>🎖️ Uniforme et Symboles</h3>
+    <ul>
+      <li> Tenue OPEX : camo beige clair, kaki et brun clair avec protections balistiques renforcées.</li>
+      <li>  Tenue de garnison / SIRRAT-I : uniforme sombre (gris foncé ou noir), casque distinctif profilé avec crête en aluminium ornée de poils bleu roi, jaune et vert — les couleurs de l’UDCF.</li>
+      <li>Insigne : un poing stylisé tenant un éclair, sur fond d’étoile tricolore — symbolisant la force, la vitesse et l’engagement pour la nation.</li>
+    </ul>
+  </li>
+  <li>
+    <h3>🌐 Rôle Géopolitique et Rayonnement</h3>
+    <ul>
+      <li>Outil de souveraineté et d’influence militaire française à l’international.</li>
+      <li>Potentiel de devenir un corps d’élite mondialement reconnu, demandé pour des missions conjointes ONU, OTAN, ou en coopération bilatérale.</li>
+      <li> Peut rivaliser, voire surpasser, les forces comme les Marines US ou les SAS britanniques, par leur polyvalence extrême.</li>
+    </ul>
+  </li>
+  <li>
+    <h3>🏛️ Objectifs à long terme</h3>
+    <ul>
+      <li>Intégration totale et stable dans l’Armée française.</li>
+      <li>Création d’un centre de formation international pour entraîner des unités alliées ou partenaires.</li>
+      <li>Développement d’une doctrine propre : la doctrine SIRRAT, axée sur l’intervention résiliente, la guerre hybride et l’éthique du combattant moderne.</li>
+    </ul>
+  </li>
+</ol>
+  </div>
+  <div id="manifestations" class="tab-content">
+    <h2>Calendrier des manifestations</h2>
+    <div class="event">
+      <strong>15 juillet 2025 :</strong> Réunion publique à Lyon
+    </div>
+    <div class="event">
+      <strong>22 juillet 2025 :</strong> Débat citoyen à Lille
+    </div>
+  </div>
+
+  <div id="rejoindre" class="tab-content">
+<iframe src="affiche.html" style="width:100%; height:100vh; border:none;"></iframe>
+</div>
+
+<div id="programme" class="tab-content">
+    <h2>🇫🇷 Programme de l’Union Démocratique des Cantons Français (UDCF)</h2>
+<p><em>« Pour la France : soyons unis, soyons Français. »</em></p>
+
+<ol style="list-style: none; padding-left: 0;">
+  <li>
+    <h3>1. 🔵 Refondation démocratique : vers la VIᵉ République</h3>
+    <ul>
+      <li>Instauration d’une VIᵉ République participative et territoriale</li>
+      <li>Référendums citoyens cantonaux et nationaux plus accessibles</li>
+      <li>Équilibre renforcé des pouvoirs (fin de l’hyperprésidence)</li>
+      <li>Création d’une Cour des territoires pour protéger les collectivités</li>
+    </ul>
+  </li>
+  <li>
+    <h3>2. 🏛️ Nouvelle organisation territoriale : la France des Cantons</h3>
+    <ul>
+      <li>recentrage sur les régions alors découpées en cantons</li>
+      <li>Certaine autonomie cantonal permettant à tous de participer à la gestion de chez sois</li>
+      <li>Regroupements de communes cohérents et équitables</li>
+      <li>Budgets décentralisés, votés localement avec contrôle citoyen</li>
+      <li>Plus de proximité entre élus et citoyens</li>
+    </ul>
+  </li>
+  <li>
+    <h3>3. ⚙️ Relance économique et souveraineté industrielle</h3>
+    <ul>
+      <li>Relocalisation et re-lancement des industries essentielles (textile, sidérurgie, malterie, mécanique, énergie...)</li>
+      <li>Plan de soutien aux PME cantonales</li>
+      <li>Nationalisation stratégique de secteurs-clés</li>
+      <li>Préférence locale dans les appels d’offres publics</li>
+    </ul>
+  </li>
+  <li>
+    <h3>4. 🌱 Transition énergétique pragmatique</h3>
+    <ul>
+      <li>Investissements dans l’hydrogène, le GNC, l’éthanol</li>
+      <li>Modernisation des réseaux (électriques, ferrés, ruraux)</li>
+      <li>Soutien aux transports doux et collectifs en zones rurales</li>
+      <li>Fin des logiques punitives, écologie concrète et de bon sens</li>
+    </ul>
+  </li>
+  <li>
+    <h3>5. 🧑‍🌾 Agriculture, ruralité et alimentation</h3>
+    <ul>
+      <li>Soutien aux petites exploitations et circuits courts</li>
+      <li>Interdiction progressive des intrants chimiques destructeurs</li>
+      <li>Création de marchés cantonaux garantissant juste rémunération</li>
+      <li>Développement du service agricole citoyen</li>
+    </ul>
+  </li>
+  <li>
+    <h3>6. 💼 Travail, dignité et justice sociale</h3>
+    <ul>
+      <li>Revalorisation du SMIC à 1600 € net dès la première année (adapté au danger du métier)</li>
+      <li>Indexation automatique des salaires sur l’inflation</li>
+      <li>Suppression des contrats ultra-précaires</li>
+      <li>Renforcement du droit du travail et des contrôles de l’inspection</li>
+    </ul>
+  </li>
+  <li>
+    <h3>7. 🏥 Services publics pour tous</h3>
+    <ul>
+      <li>Réouverture de petites lignes SNCF, écoles et hôpitaux</li>
+      <li>Garantie d’un service public à moins de 20 minutes pour chaque citoyen</li>
+      <li>Création de maisons cantonales des services publics</li>
+      <li>Réduction des écarts entre zones rurales et métropoles</li>
+    </ul>
+  </li>
+  <li>
+    <h3>8. 🎓 Jeunesse, formation et service citoyen</h3>
+    <ul>
+      <li>Formation gratuite et rémunérée dans chaque canton</li>
+      <li>Rénovation complète du système éducatif</li>
+      <li>Mise en place d’un service citoyen court, formateur et local</li>
+      <li>Encouragement au volontariat, à l'engagement associatif et territorial</li>
+    </ul>
+  </li>
+  <li>
+    <h3>9. 🌍 Identité, culture et unité nationale</h3>
+    <ul>
+      <li>Respect des identités régionales et ultramarines</li>
+      <li>Promotion du patrimoine local, des langues et fêtes régionales</li>
+      <li>Défense ferme des valeurs républicaines et de la laïcité</li>
+      <li>Lutte contre les séparatismes par l’unité populaire, non par la répression</li>
+    </ul>
+  </li>
+  <li>
+    <h3>10. 🇫🇷 Souveraineté populaire & indépendance nationale</h3>
+    <ul>
+      <li>Rétablissement de la souveraineté législative et économique</li>
+      <li>Priorité au Made in France et à la décision française</li>
+      <li>Défense nationale renforcée dans un cadre citoyen</li>
+    </ul>
+  </li>
+</div>
+
+<div id="autres" class="tab-content">
+    <h2>🇫🇷 Réformes Culturelles, Cérémonielles et du Calendrier</h2>
+<p><em>L’UDCF souhaite instaurer une nouvelle dynamique républicaine et identitaire forte, en restructurant les jours fériés, les périodes de vacances et les célébrations nationales. Le but est de renforcer l’unité, l’histoire et l’identité de la France tout en prenant en compte les réalités territoriales.</em></p>
+
+<ol style="list-style: none; padding-left: 0;">
+        <h2>📅 Nouveau Système de Vacances et de Jours Fériés</h2>
+
+        <h3>Découpage du territoire métropolitain</h3>
+        <p>
+          La France métropolitaine est divisée en deux zones, séparées au niveau de Lyon, qui appartient à la Zone SUD.<br>
+          Le Sud part en vacances une semaine avant le Nord, en alternance régulière selon le calendrier national.
+        </p>
+
+        <h3>Jours fériés nationaux obligatoires (8 jours fixes pour tous)</h3>
+        <ul>
+          <li>1er janvier – Jour de l’an</li>
+          <li>1er mai – Fête du Travail</li>
+          <li>8 mai – Commémoration de la Victoire de 1945</li>
+          <li>6 juin – Commémoration du Débarquement</li>
+          <li>14 juillet – Fête nationale</li>
+          <li>11 novembre – Armistice 1918</li>
+          <li>13 novembre – Hommage aux victimes du terrorisme</li>
+          <li>25 décembre – Noël</li>
+        </ul>
+
+        <h3>Jours fériés régionaux (jusqu’à 5 jours)</h3>
+        <p>
+          Chaque région métropolitaine pourra, via ses conseils cantonaux régionaux, définir jusqu’à 5 jours fériés locaux (ex. : fêtes historiques ou culturelles spécifiques à la région).
+        </p>
+
+        <h3>DOM-TOM</h3>
+        <p>
+          Les territoires d’outre-mer disposeront de calendriers scolaires et fériés adaptés à leurs réalités climatiques, culturelles et historiques.
+        </p>
+
+        <h2>🎖️ Réforme des Défilés Nationaux</h2>
+
+        <h3>Défilé du 14 juillet – Nouvelle organisation</h3>
+        <p>
+          <strong>Ouverture solennelle avec :</strong>
+        </p>
+        <ul>
+          <li>Le Président de la République à cheval, escorté par la Garde Républicaine.</li>
+          <li>Un char Leclerc ou VBCI en tête, suivi de la gendarmerie en formation triangle.</li>
+          <li>Le convoi présidentiel encadré par des unités motorisées, puis un second blindé en fermeture.</li>
+        </ul>
+
+        <p><strong>Troupes étrangères invitées</strong>, positionnées en honneur sur le côté après leur passage initial.</p>
+
+        <h3>Défilé aérien évolué :</h3>
+        <ul>
+          <li>Passage des Alpha Jet</li>
+          <li>Spectacle aérien : combats simulés, acrobaties</li>
+          <li>Parachutage d’un régiment depuis un A400M</li>
+          <li>Le régiment atterrit, avance en formation, porte les drapeaux, chante la Marseillaise, puis salue officiellement le Président (bras tendu à gauche, poing fermé)</li>
+        </ul>
+
+        <h3>Défilé terrestre :</h3>
+        <ul>
+          <li>Troupes de volontaires</li>
+          <li>Jeunes du Service militaire obligatoire (16–21 ans)</li>
+          <li>Corps formés dans les formations militaires intégrées aux services civils (police, pompiers, etc.)</li>
+          <li>Armées (SIRRAT, Terre, Air, Mer)</li>
+          <li>Pompiers, gendarmerie et unités spécialisées</li>
+          <li>Sécurité civile</li>
+          <li>Vétérans clôturant le cortège</li>
+        </ul>
+
+        <h3>Clôture spectaculaire :</h3>
+        <ul>
+          <li>Des hélicoptères légers s’alignent et déploient des cordes.</li>
+          <li>Les parachutistes initiaux remontent à la corde.</li>
+          <li>Des drapeaux géants français sont ouverts sous les hélicos, qui réalisent un dernier passage d’honneur.</li>
+        </ul>
+
+        <h2>Défilé du 8 mai – Cérémonial historique</h2>
+        <ul>
+          <li>Version plus réduite et centrée sur la mémoire et les anciens combattants.</li>
+          <li>Véhicules historiques de la Seconde Guerre mondiale mis à l’honneur.</li>
+          <li>Remise de médailles, récits de guerre, chants militaires, et respect des anciens.</li>
+        </ul>
+      </div>
+    </li>
+  </ul>
+</li>
+
+   <div id="CMN-CRO" class="tab-content">
+    <h2>Stratégie nationale d’intégration et de redynamisation : le modèle UDCF</h2>
+
+<ol style="list-style: none; padding-left: 0;">
+  <li>
+        <h4>🔹 Un système d'intégration moderne et humain</h4>
+        <p><strong>CMN (Centres de Mise à Niveau)</strong> : pour les personnes entrées illégalement mais aptes à travailler. Formation intensive de 3 mois au français, à l’histoire de France et aux valeurs républicaines. Accompagnement professionnel, formation ou VAE, puis insertion surveillée pendant 1 an.</p>
+        <p><strong>CRO (Centres de Réforme Obligatoire)</strong> : pour les profils inéligibles à un emploi immédiat. Formation à la vie quotidienne, éducation civique et linguistique. Obtention du BAVQ (Brevet d’Aptitude à la Vie Quotidienne) conditionnant un visa temporaire.</p>
+        <p><strong>Camps d’attente</strong> : solution temporaire pour les personnes en attente de traitement. Conditions dignes et encadrement structuré</p>
+
+        <h4>🔹 Une répartition équilibrée et intelligente</h4>
+        <ul>
+          <li>Orientation vers les régions en déclin.</li>
+          <li>Logement temporaire à la sortie des centres, 3 mois max.</li>
+          <li>Partenariat avec entreprises nationalisées, quotas de recrutement.</li>
+        </ul>
+
+        <h4>🔹 Un retour au travail pour tous</h4>
+        <ul>
+          <li>Pour les sans-abri : réinsertion par VAE liée à leur expérience.</li>
+          <li>Pour les chômeurs longue durée : formation/emploi obligatoire sous 48 jours, pénalités sur aides, réintégration CMN si besoin.</li>
+        </ul>
+
+        <h4>🔹 Un équilibre pour les Français d’origine</h4>
+        <ul>
+          <li>Priorité nationale au logement, emploi, formation pour tous les Français.</li>
+          <li>Personne ne doit se sentir oublié dans ce modèle de justice sociale.</li>
+        </ul>
+
+        <h4>🟢 Objectif : relancer l’économie, apaiser la société</h4>
+        <ul>
+          <li>Réduction du chômage par la création de travailleurs formés.</li>
+          <li>Réindustrialisation via secteurs clés nationalisés (textile, sidérurgie…)</li>
+          <li>Revenus supplémentaires estimés : 10–16 Mds€/an à long terme.</li>
+          <li>Gestion humaine et structuré de l’immigration.</li>
+        </ul>
+
+        <h4>⚖️ Un modèle juste, efficace et durable</h4>
+        <p>Ce plan replace la justice sociale et la souveraineté nationale au cœur de la politique. Sécurité, dignité, prospérité : chaque individu devient acteur de la renaissance nationale.</p>
+      </div>
+    </li>
+  </ul>
+</li>
+  </ul>
+</ol>
+  </div>
+  <script>
+  function showTab(tabId) {
+    const tabs = document.querySelectorAll('.tab-content');
+    tabs.forEach(tab => tab.classList.remove('active'));
+    document.getElementById(tabId).classList.add('active');
+  }
+
+  window.addEventListener('load', () => {
+  const header = document.getElementById('main-header');
+  let lastScroll = window.pageYOffset;
+
+  window.addEventListener('scroll', () => {
+    const currentScroll = window.pageYOffset;
+    console.log('Scroll:', currentScroll, 'Last:', lastScroll);
+
+    if (currentScroll > lastScroll && currentScroll > 80) {
+      if (!header.classList.contains('hide-on-scroll')) {
+        console.log('Adding hide-on-scroll');
+        header.classList.add('hide-on-scroll');
+      }
+    } else {
+      if (header.classList.contains('hide-on-scroll')) {
+        console.log('Removing hide-on-scroll');
+        header.classList.remove('hide-on-scroll');
+      }
+    }
+
+    lastScroll = currentScroll;
+  });
+});
+</script>
+</body>
+</html>

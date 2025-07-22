@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <title>Affiche de campagne - Thoma Nathan</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Arial', sans-serif;
+      background: white;
+    }
+    .affiche {
+      width: 210mm;
+      height: 297mm;
+      padding: 30mm 20mm;
+      box-sizing: border-box;
+      background: linear-gradient(to bottom, #003366 0%, white 40%, #d40000 100%);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: space-between;
+      border: 2px solid #003366;
+      color: #003366;
+    }
+    .logo {
+      width: 80px;
+      height: auto;
+    }
+    h1 {
+      font-size: 36px;
+      color: #003366;
+      text-transform: uppercase;
+      margin: 20px 0 0;
+      text-align: center;
+    }
+    .slogan {
+      font-size: 24px;
+      color: #d40000;
+      font-weight: bold;
+      text-align: center;
+      margin: 10px 0 30px;
+    }
+    .bloc-message {
+      background-color: white;
+      padding: 2rem;
+      border-radius: 10px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+      max-width: 600px;
+      text-align: center;
+      color: #003366;
+    }
+    .bloc-message h2 {
+      font-size: 24px;
+      margin-bottom: 1rem;
+    }
+    .bloc-message p {
+      font-size: 18px;
+      line-height: 1.5;
+    }
+    .call-to-action {
+      font-size: 20px;
+      font-weight: bold;
+      color: white;
+      background-color: #d40000;
+      padding: 1rem 2rem;
+      border-radius: 30px;
+      margin-top: 30px;
+      text-transform: uppercase;
+      border: none;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+    }
+    .call-to-action:hover {
+      background-color: #b30000;
+    }
+    footer {
+      font-size: 14px;
+      color: #fff;
+      margin-top: 20px;
+      text-align: center;
+    }
+
+    /* Formulaire modal */
+    #formulaire-recrutement {
+      display: none;
+      background: rgba(0,0,0,0.5);
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      z-index: 1000;
+      align-items: center;
+      justify-content: center;
+    }
+    #formulaire-recrutement .form-content {
+      background: white;
+      padding: 2rem;
+      border-radius: 12px;
+      max-width: 500px;
+      width: 90%;
+      position: relative;
+      box-sizing: border-box;
+    }
+    #formulaire-recrutement .form-content button.close {
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      background: none;
+      border: none;
+      font-size: 1.5rem;
+      cursor: pointer;
+    }
+    #formulaire-recrutement input,
+    #formulaire-recrutement textarea {
+      width: 100%;
+      padding: 0.5rem;
+      margin-bottom: 1rem;
+      box-sizing: border-box;
+      font-family: Arial, sans-serif;
+      font-size: 1rem;
+    }
+    #formulaire-recrutement button[type="submit"] {
+      margin-top: 1rem;
+      padding: 0.75rem 2rem;
+      background-color: #d40000;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      font-size: 1rem;
+    }
+    #formulaire-recrutement button[type="submit"]:hover {
+      background-color: #b30000;
+    }
+  </style>
+</head>
+<body>
+  <div class="affiche">
+    <img src="drapeau-udcf.png" alt="Logo UDCF" class="logo" />
+
+    <div>
+      <h1>Thoma Nathan</h1>
+      <div class="slogan">Pour la France : soyons unis, soyons Français</div>
+    </div>
+
+    <div class="bloc-message">
+      <h2>Union Démocratique des Cantons Français</h2>
+      <p>
+        Avec vous, Thoma Nathan s'engage pour une République nouvelle,
+        locale et populaire. Une France forte, équitable, souveraine.
+        Rejoignez le mouvement de renouveau.
+      </p>
+    </div>
+
+    <button class="call-to-action" id="ouvrir-formulaire">Rejoins le mouvement, sauve la France</button>
+
+    <footer>© UDCF 2025 — www.udcf.fr</footer>
+  </div>
+
+  <div id="formulaire-recrutement">
+    <div class="form-content">
+      <button class="close" onclick="document.getElementById('formulaire-recrutement').style.display='none'">×</button>
+      <h2 style="text-align:center;">Formulaire de Recrutement</h2>
+      <form>
+        <label for="nom">Nom :</label>
+        <input type="text" id="nom" required />
+
+        <label for="email">Email :</label>
+        <input type="email" id="email" required />
+
+        <label for="message">Pourquoi souhaitez-vous nous rejoindre ?</label>
+        <textarea id="message" required></textarea>
+
+        <button type="submit">Envoyer</button>
+      </form>
+    </div>
+  </div>
+
+  <script>
+    document.getElementById('ouvrir-formulaire').addEventListener('click', function() {
+      document.getElementById('formulaire-recrutement').style.display = 'flex';
+    });
+  </script>
+</body>
+</html>
+
