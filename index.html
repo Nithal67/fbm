@@ -840,7 +840,7 @@ footer {
     const currentScroll = window.pageYOffset;
     console.log('Scroll:', currentScroll, 'Last:', lastScroll);
 
-    if (currentScroll > lastScroll && currentScroll > 80) {
+    if (currentScroll > lastScroll && currentScroll > 200) {
       if (!header.classList.contains('hide-on-scroll')) {
         console.log('Adding hide-on-scroll');
         header.classList.add('hide-on-scroll');
