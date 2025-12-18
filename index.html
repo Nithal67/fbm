@@ -35,187 +35,284 @@
     </nav>
   </div>
   <style>
-    /* ===================== RESET ===================== */
-* {
+   * {
   box-sizing: border-box;
   margin: 0;
   padding: 0;
 }
 
-/* ===================== BASE ===================== */
 html, body {
   font-family: 'Inter', sans-serif;
+  scroll-behavior: auto;
   background: url('fond.png') no-repeat center center;
-  background-size: cover;
+  position: relative;
+  padding-top: 105px;
   background-attachment: fixed;
-  padding-top: 110px;
+  background-size: cover;
 }
 
-/* ===================== GLOW ===================== */
+/* Reflets verts animés */
 body::before,
 body::after {
   content: "";
-  position: fixed;
+  position: absolute;
   border-radius: 50%;
   pointer-events: none;
   z-index: -1;
+  opacity: 0.5;
   filter: blur(100px);
+  transform: scale(1.2);
   animation: floatGlow 8s ease-in-out infinite alternate;
 }
 
 body::before {
-  width: 600px;
-  height: 600px;
   top: -200px;
   left: -200px;
-  background: rgba(0,255,120,0.25);
+  width: 600px;
+  height: 600px;
+  background: rgba(0, 255, 120, 0.25);
 }
 
 body::after {
-  width: 500px;
-  height: 500px;
   bottom: -150px;
   right: -150px;
-  background: rgba(0,255,120,0.2);
+  width: 500px;
+  height: 500px;
+  background: rgba(0, 255, 120, 0.2);
 }
 
+/* Animation de "respiration" */
 @keyframes floatGlow {
-  from { transform: scale(1.1); opacity: 0.4; }
-  to   { transform: scale(1.3); opacity: 0.6; }
+  0% { transform: scale(1.1) translateY(0); opacity: 0.4; }
+  100% { transform: scale(1.3) translateY(20px); opacity: 0.6; }
 }
 
-.hide-on-scroll {
-  transform: translateY(-100%);
-  transition: transform 0.3s ease;
-}
-
-.tab-content {
-  display: none;
-  max-width: 1100px;
-  margin: 2rem auto;
-  padding: 2rem;
-  background: rgba(0, 20, 40, 0.85);
-  border-radius: 16px;
-  box-shadow: 0 0 25px rgba(0,255,136,0.15);
-  color: white;
-  line-height: 1.6;
-}
-
-.tab-content.active {
-  display: block;
-}
-
-/* ===================== HEADER ===================== */
-header {
+/* Intro plein écran */
+.intro {
+  height: 100vh;
+  width: 100vw;
   position: fixed;
   top: 0;
-  width: 100%;
-  background: #003366;
-  color: white;
+  left: 0;
   z-index: 1000;
-  border-bottom: 4px solid #00ff88;
-  box-shadow: 0 0 15px rgba(0,255,136,0.4);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: radial-gradient(circle, #000 0%, #111 100%);
+  animation: fadeOut 1s ease-in-out 3s forwards;
 }
 
-.header-inner {
+.intro img {
+  width: 100vw;
+  height: 100vh;
+  object-fit: cover;
+  animation: scaleIn 2s ease-out;
+  filter: brightness(0.7);
+}
+
+@keyframes fadeOut { to { opacity: 0; visibility: hidden; } }
+@keyframes scaleIn { from { transform: scale(1.1); opacity: 0; } to { transform: scale(1); opacity: 1; } }
+
+/* Header */
+header {
+  background: #003366;
+  color: white;
+  padding: 2rem;
+  position: fixed;
+  width: 100%;
+  top: 0;
+  z-index: 999;
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding: 1.2rem;
+  justify-content: center;
+  border-bottom: 4px solid #00ff88;
+  border-radius: 0 0 20px 20px;
+  box-shadow: 0 0 10px #00ff88, 0 0 30px rgba(0, 255, 136, 0.3);
+  font-family: 'Orbitron', sans-serif;
+  text-align: center;
+  transition: transform 0.4s ease;
 }
 
 header h1 {
-  font-family: 'Orbitron', sans-serif;
-  font-size: clamp(1.4rem, 5vw, 2.2rem);
-  text-align: center;
+  font-size: 2.5rem;
+  font-weight: 700;
 }
 
 header img.logo {
-  height: 48px;
-  margin-bottom: 0.5rem;
-}
-
-header {
+  height: 60px;
+  margin-right: 1rem;
   transition: transform 0.3s ease;
+  filter: drop-shadow(0 0 5px rgba(255, 255, 255, 0.5));
 }
 
-/* ===================== NAV ===================== */
+header img.logo:hover {
+  transform: scale(1.1) rotate(-3deg);
+}
+
+#main-header.hide-on-scroll { transform: translateY(-110%); }
+
+.logo-animation {
+  animation: fadeInScale 1.5s ease forwards;
+  opacity: 0;
+}
+
+@keyframes fadeInScale { from { opacity: 0; transform: scale(0.8); } to { opacity: 1; transform: scale(1); } }
+
+/* Navigation */
 nav {
-  width: 100%;
-  background: #004080;
-}
-
-.nav-links {
   display: flex;
   justify-content: center;
+  flex-wrap: wrap;
+  background-color: #004080;
+  box-shadow: 0 4px 6px rgba(0,0,0,0.1);
 }
 
-.nav-links a,
-.nav-links button {
-  padding: 1rem 1.3rem;
-  background: none;
-  border: none;
+nav a, nav .dropdown-toggle {
+  padding: 1rem 1.5rem;
   color: white;
+  text-decoration: none;
   font-weight: bold;
-  font-family: inherit;
-  cursor: pointer;
-}
-
-.nav-links a:hover,
-.nav-links button:hover {
-  background: #002147;
-}
-
-/* ===================== DROPDOWN ===================== */
-.dropdown {
+  transition: background 0.3s, border-bottom 0.3s;
+  border-bottom: 3px solid transparent;
+  display: inline-block;
   position: relative;
 }
 
+nav a:hover, nav a.active, nav .dropdown-toggle:hover {
+  background-color: #002147;
+  border-bottom: 3px solid #ffd60a;
+}
+
+/* Dropdown */
+.dropdown { position: relative; }
 .dropdown-menu {
   display: none;
   position: absolute;
   top: 100%;
+  left: 0;
   background: #004080;
+  border-radius: 12px;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+  z-index: 999;
   min-width: 200px;
   flex-direction: column;
 }
-
 .dropdown-menu a {
-  padding: 0.9rem 1.2rem;
+  padding: 0.8rem 1.2rem;
+  color: white;
+  text-decoration: none;
+  font-weight: 500;
+  transition: background 0.3s;
+}
+.dropdown-menu a:hover { background-color: #00ff9d; color: #002147; }
+.dropdown:hover .dropdown-menu { display: flex; }
+
+/* Sections */
+.tab-content {
+  display: none;
+  padding: 2.5rem;
+  background: white;
+  border-radius: 16px;
+  margin: 2rem auto;
+  box-shadow: 0 6px 20px rgba(0,0,0,0.07);
+  max-width: 1000px;
+  animation: fadeInSection 0.6s ease;
+  position: relative;
+  z-index: 1;
+}
+.tab-content.active { display: block; }
+
+@keyframes fadeInSection { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+
+h2 { color: #003366; font-size: 2.2rem; margin-bottom: 1rem; }
+h3 { color: #004080; margin-top: 1.5rem; font-size: 1.5rem; }
+
+ul { margin-left: 1.5rem; margin-bottom: 1rem; list-style: disc; }
+blockquote {
+  margin: 1.5rem 0;
+  padding: 1rem 1.5rem;
+  border-left: 5px solid #fcbf49;
+  background-color: #f9f9f9;
+  font-style: italic;
+  color: #555;
+  border-radius: 8px;
 }
 
-/* Desktop */
-@media (min-width: 769px) {
-  .dropdown:hover .dropdown-menu {
-    display: flex;
-  }
+/* Uniformes */
+.uniform-symbols-images {
+  display: flex;
+  gap: 2rem;
+  margin-top: 1.5rem;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+.uniform-symbols-images .image-block { text-align: center; max-width: 200px; }
+.uniform-symbols-images img {
+  width: 100%;
+  height: auto;
+  border-radius: 10px;
+  box-shadow: 0 0 10px rgba(0, 255, 136, 0.5);
+}
+.uniform-symbols-images p {
+  margin-top: 0.5rem;
+  font-weight: 600;
+  color: #003366;
+  font-family: 'Orbitron', sans-serif;
 }
 
-/* ===================== MOBILE ===================== */
+/* Équipe */
+.team-member {
+  display: flex;
+  align-items: center;
+  background: #ffffff;
+  border-radius: 16px;
+  padding: 1.5rem;
+  margin-bottom: 2rem;
+  box-shadow: 0 6px 15px rgba(0,0,0,0.05);
+  transition: all 0.3s ease;
+}
+.team-member:hover { transform: translateY(-8px); box-shadow: 0 8px 20px rgba(0,0,0,0.08); }
+.team-member img {
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+  object-fit: cover;
+  margin-right: 1.5rem;
+  border: 3px solid #fcbf49;
+}
+
+/* Événements */
+.event {
+  background: #ffffff;
+  padding: 1.25rem;
+  margin-bottom: 1.5rem;
+  border-left: 5px solid #fcbf49;
+  border-radius: 12px;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+}
+
+/* Images */
+img { border-radius: 12px; box-shadow: 0 4px 12px rgba(0,0,0,0.08); max-width: 100%; height: auto; margin-bottom: 1rem; }
+
+/* Footer */
+footer {
+  background-color: #002147;
+  color: white;
+  padding: 2rem;
+  text-align: center;
+  margin-top: 4rem;
+  font-size: 0.9rem;
+  border-top: 4px solid #fcbf49;
+}
+
+/* Responsive */
 @media (max-width: 768px) {
-
-  body {
-    padding-top: 140px;
-  }
-
-  .nav-links {
-    flex-direction: column;
-  }
-
-  .nav-links a,
-  .nav-links button {
-    width: 100%;
-    text-align: center;
-    padding: 1rem;
-  }
-
-  .dropdown-menu {
-    position: static;
-    width: 100%;
-  }
-
-  .dropdown.active .dropdown-menu {
-    display: flex;
+  header { flex-direction: column; text-align: center; }
+  nav { flex-direction: column; }
+  nav a { width: 100%; text-align: center; border-bottom: 1px solid rgba(255,255,255,0.1); }
+  .team-member { flex-direction: column; text-align: center; }
+  .team-member img { margin-bottom: 1rem; }
   }
 }
 </style>
