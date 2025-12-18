@@ -5,24 +5,25 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>UETF-UNION EQUITABLE DES TERRITOIRES FRANCAIS</title>
   <style>
+/* ===================== RESET ===================== */
 * {
   box-sizing: border-box;
   margin: 0;
   padding: 0;
 }
 
+/* ===================== BASE ===================== */
 html, body {
   font-family: 'Inter', sans-serif;
   scroll-behavior: auto;
   background: url('fond.png') no-repeat center center;
+  background-size: cover;
+  background-attachment: fixed;
   position: relative;
   padding-top: 105px;
-  background-attachment: fixed;
-  background-size: cover;
-
 }
 
-/* Deux reflets verts animés */
+/* ===================== GLOW BACKGROUND ===================== */
 body::before,
 body::after {
   content: "";
@@ -52,25 +53,23 @@ body::after {
   background: rgba(0, 255, 120, 0.2);
 }
 
-/* Animation de "respiration" */
 @keyframes floatGlow {
-  0% {
+  from {
     transform: scale(1.1) translateY(0);
     opacity: 0.4;
   }
-  100% {
+  to {
     transform: scale(1.3) translateY(20px);
     opacity: 0.6;
   }
 }
 
-/* Intro plein écran */
+/* ===================== INTRO ===================== */
 .intro {
   height: 100vh;
   width: 100vw;
   position: fixed;
-  top: 0;
-  left: 0;
+  inset: 0;
   z-index: 1000;
   display: flex;
   justify-content: center;
@@ -80,14 +79,13 @@ body::after {
 }
 
 .intro img {
-  width: 100vw;
-  height: 100vh;
+  width: 100%;
+  height: 100%;
   object-fit: cover;
   animation: scaleIn 2s ease-out;
   filter: brightness(0.7);
 }
 
-/* Animations */
 @keyframes fadeOut {
   to {
     opacity: 0;
@@ -106,13 +104,14 @@ body::after {
   }
 }
 
-/* Conteneur */
+/* ===================== CONTAINER ===================== */
 .container {
   max-width: 1200px;
   margin: auto;
   padding: 2rem;
 }
 
+/* ===================== HEADER ===================== */
 header {
   background: #003366;
   color: white;
@@ -120,35 +119,27 @@ header {
   position: fixed;
   width: 100%;
   top: 0;
-  transition: transform 0.4s ease; /* <-- ici */
   z-index: 999;
+  transition: transform 0.4s ease;
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center;
   border-bottom: 4px solid #00ff88;
   border-radius: 0 0 20px 20px;
   box-shadow: 0 0 10px #00ff88, 0 0 30px rgba(0, 255, 136, 0.3);
   font-family: 'Orbitron', sans-serif;
   text-align: center;
-  transform: translateY(0); /* état initial */
-}
-
-header.visible {
-  opacity: 1;
-  transform: translateY(0);
 }
 
 header h1 {
-  font-size: 2.5rem;
+  font-size: clamp(1.8rem, 5vw, 2.5rem);
   font-weight: 700;
 }
 
 header img.logo {
   height: 60px;
-  margin-right: 1rem;
+  margin-bottom: 0.5rem;
   transition: transform 0.3s ease;
-  filter: drop-shadow(0 0 5px rgba(255, 255, 255, 0.5));
 }
 
 header img.logo:hover {
@@ -156,32 +147,15 @@ header img.logo:hover {
 }
 
 #main-header.hide-on-scroll {
-  transform: translateY(-110%); /* pour bien sortir complètement */
-  /* pas besoin de transition ici car elle est déjà sur l’élément principal */
+  transform: translateY(-110%);
 }
 
-.logo-animation {
-  animation: fadeInScale 1.5s ease forwards;
-  opacity: 0;
-}
-
-@keyframes fadeInScale {
-  from {
-    opacity: 0;
-    transform: scale(0.8);
-  }
-  to {
-    opacity: 1;
-    transform: scale(1);
-  }
-}
-/* Assure que tous les éléments dans nav sont alignés */
+/* ===================== NAV ===================== */
 nav {
   display: flex;
   justify-content: center;
   flex-wrap: wrap;
   background-color: #004080;
-  box-shadow: 0 4px 6px rgba(0,0,0,0.1);
 }
 
 nav a,
@@ -190,10 +164,8 @@ nav .dropdown-toggle {
   color: white;
   text-decoration: none;
   font-weight: bold;
-  transition: background 0.3s, border-bottom 0.3s;
   border-bottom: 3px solid transparent;
-  display: inline-block;
-  position: relative;
+  transition: background 0.3s, border-bottom 0.3s;
 }
 
 nav a:hover,
@@ -203,55 +175,35 @@ nav .dropdown-toggle:hover {
   border-bottom: 3px solid #ffd60a;
 }
 
-/* Dropdown structure */
+/* Dropdown */
 .dropdown {
   position: relative;
 }
 
-/* Sous-menu */
 .dropdown-menu {
   display: none;
   position: absolute;
   top: 100%;
   left: 0;
-  background: #004080; /* vert sombre + opacité */
+  background: #004080;
   border-radius: 12px;
-  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
-  z-index: 999;
   min-width: 200px;
   flex-direction: column;
 }
 
-.dropdown-menu a {
-  padding: 0.8rem 1.2rem;
-  color: white;
-  text-decoration: none;
-  font-weight: 500;
-  transition: background 0.3s;
-}
-
-.dropdown-menu a:hover {
-  background-color: #00ff9d;
-  color: #002147;
-}
-
-/* Affiche le menu au survol */
 .dropdown:hover .dropdown-menu {
   display: flex;
 }
 
-/* Sections */
+/* ===================== CONTENT ===================== */
 .tab-content {
   display: none;
   padding: 2.5rem;
   background: white;
   border-radius: 16px;
   margin: 2rem auto;
-  box-shadow: 0 6px 20px rgba(0,0,0,0.07);
   max-width: 1000px;
   animation: fadeInSection 0.6s ease;
-  position: relative;
-  z-index: 1;
 }
 
 .tab-content.active {
@@ -269,122 +221,58 @@ nav .dropdown-toggle:hover {
   }
 }
 
+/* ===================== TEXT ===================== */
 h2 {
   color: #003366;
-  font-size: 2.2rem;
+  font-size: clamp(1.6rem, 4.5vw, 2.2rem);
   margin-bottom: 1rem;
 }
 
 h3 {
   color: #004080;
   margin-top: 1.5rem;
-  font-size: 1.5rem;
+  font-size: clamp(1.3rem, 4vw, 1.5rem);
 }
 
-ul {
-  margin-left: 1.5rem;
-  margin-bottom: 1rem;
-  list-style: disc;
+p, li {
+  line-height: 1.6;
 }
 
-blockquote {
-  margin: 1.5rem 0;
-  padding: 1rem 1.5rem;
-  border-left: 5px solid #fcbf49;
-  background-color: #f9f9f9;
-  font-style: italic;
-  color: #555;
-  border-radius: 8px;
-}
-
-.uniform-symbols-images {
-  display: flex;
-  gap: 2rem;
-  margin-top: 1.5rem;
-  justify-content: center;
-  flex-wrap: wrap; /* pour mobile */
-}
-
-.uniform-symbols-images .image-block {
-  text-align: center;
-  max-width: 200px;
-}
-
-.uniform-symbols-images img {
-  width: 100%;
-  height: auto;
-  border-radius: 10px;
-  box-shadow: 0 0 10px rgba(0, 255, 136, 0.5);
-}
-
-.uniform-symbols-images p {
-  margin-top: 0.5rem;
-  font-weight: 600;
-  color: #003366;
-  font-family: 'Orbitron', sans-serif;
-}
-
-/* Équipe */
+/* ===================== TEAM ===================== */
 .team-member {
   display: flex;
   align-items: center;
-  background: #ffffff;
+  background: #fff;
   border-radius: 16px;
   padding: 1.5rem;
   margin-bottom: 2rem;
-  box-shadow: 0 6px 15px rgba(0,0,0,0.05);
-  transition: all 0.3s ease;
-}
-
-.team-member:hover {
-  transform: translateY(-8px);
-  box-shadow: 0 8px 20px rgba(0,0,0,0.08);
+  transition: 0.3s;
 }
 
 .team-member img {
   width: 100px;
   height: 100px;
   border-radius: 50%;
-  object-fit: cover;
   margin-right: 1.5rem;
-  border: 3px solid #fcbf49;
 }
 
-/* Événements */
-.event {
-  background: #ffffff;
-  padding: 1.25rem;
-  margin-bottom: 1.5rem;
-  border-left: 5px solid #fcbf49;
-  border-radius: 12px;
-  box-shadow: 0 4px 10px rgba(0,0,0,0.05);
-}
-
-/* Images */
-img {
-  border-radius: 12px;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.08);
-  max-width: 100%;
-  height: auto;
-  margin-bottom: 1rem;
-}
-
-/* Footer */
+/* ===================== FOOTER ===================== */
 footer {
-  background-color: #002147;
+  background: #002147;
   color: white;
   padding: 2rem;
   text-align: center;
   margin-top: 4rem;
-  font-size: 0.9rem;
-  border-top: 4px solid #fcbf49;
 }
 
-/* Responsive */
+/* ===================== RESPONSIVE ===================== */
 @media (max-width: 768px) {
-  header {
-    flex-direction: column;
-    text-align: center;
+  html, body {
+    padding-top: 90px;
+  }
+
+  .container {
+    padding: 1.25rem;
   }
 
   nav {
@@ -394,7 +282,14 @@ footer {
   nav a {
     width: 100%;
     text-align: center;
-    border-bottom: 1px solid rgba(255,255,255,0.1);
+  }
+
+  .dropdown:hover .dropdown-menu {
+    display: none;
+  }
+
+  .dropdown.active .dropdown-menu {
+    display: flex;
   }
 
   .team-member {
@@ -403,7 +298,22 @@ footer {
   }
 
   .team-member img {
+    margin-right: 0;
     margin-bottom: 1rem;
+  }
+}
+
+@media (max-width: 480px) {
+  body {
+    background-attachment: scroll;
+  }
+
+  header h1 {
+    font-size: 1.6rem;
+  }
+
+  footer {
+    font-size: 0.85rem;
   }
 }
 </style>
