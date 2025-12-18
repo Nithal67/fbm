@@ -1,9 +1,39 @@
 <!DOCTYPE html>
 <html lang="fr">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>UETF-UNION EQUITABLE DES TERRITOIRES FRANCAIS</title>
+<header id="main-header">
+  <div class="header-inner">
+    <img src="drapeau.png" alt="Logo UETF" class="logo"/>
+
+    <div class="logo-animation">
+      <h1>Union Équitable des Territoires Français</h1>
+      <p><em>"Libre d'être égaux"</em></p>
+    </div>
+
+    <nav>
+      <div class="nav-links">
+        <a href="#" onclick="showTab('accueil')">Accueil</a>
+        <a href="#" onclick="showTab('presentation')">Présentation</a>
+
+        <div class="dropdown">
+          <button class="dropdown-toggle">Programme ▾</button>
+          <div class="dropdown-menu">
+            <a onclick="showTab('VI')">VIe République</a>
+            <a onclick="showTab('programme')">Territorial</a>
+            <a onclick="showTab('SIRRAT')">Scolaire</a>
+            <a onclick="showTab('Travail')">Travail</a>
+            <a onclick="showTab('Judiciaire')">Judiciaire</a>
+            <a onclick="showTab('Infra')">Infrastructure</a>
+            <a onclick="showTab('CMN-CRO')">Finances</a>
+            <a onclick="showTab('autres')">Autres</a>
+            <a onclick="showTab('equipe')">L'équipe</a>
+          </div>
+        </div>
+
+        <a href="#" onclick="showTab('manifestations')">Manifestations</a>
+        <a href="#" onclick="showTab('rejoindre')">Nous rejoindre</a>
+      </div>
+    </nav>
+  </div>
   <style>
     /* ===================== RESET ===================== */
 * {
@@ -57,6 +87,22 @@ body::after {
 .hide-on-scroll {
   transform: translateY(-100%);
   transition: transform 0.3s ease;
+}
+
+.tab-content {
+  display: none;
+  max-width: 1100px;
+  margin: 2rem auto;
+  padding: 2rem;
+  background: rgba(0, 20, 40, 0.85);
+  border-radius: 16px;
+  box-shadow: 0 0 25px rgba(0,255,136,0.15);
+  color: white;
+  line-height: 1.6;
+}
+
+.tab-content.active {
+  display: block;
 }
 
 /* ===================== HEADER ===================== */
@@ -148,16 +194,8 @@ nav {
 /* ===================== MOBILE ===================== */
 @media (max-width: 768px) {
 
-  html, body {
-    padding-top: 95px;
-  }
-
-  .header-inner {
-    padding: 0.8rem;
-  }
-
-  nav {
-    border-top: 1px solid rgba(255,255,255,0.15);
+  body {
+    padding-top: 140px;
   }
 
   .nav-links {
@@ -168,70 +206,19 @@ nav {
   .nav-links button {
     width: 100%;
     text-align: center;
-    padding: 0.9rem;
-    border-bottom: 1px solid rgba(255,255,255,0.15);
+    padding: 1rem;
   }
 
   .dropdown-menu {
     position: static;
+    width: 100%;
   }
 
   .dropdown.active .dropdown-menu {
     display: flex;
   }
-
-  @media (max-width: 768px) {
-  nav {
-    width: 100%;
-  }
-
-  .nav-links {
-    display: flex;
-    flex-direction: column;
-  }
-
-  .dropdown-menu a {
-    text-align: center;
-  }
 }
 </style>
-</head>
-<body>
-  <div class="intro" id="intro">
-    <img src="drapeau.png" alt="Drapeau de l'UDCF">
-  </div>
-
-  <header id="main-header">
-    <img src="drapeau.png" alt="Logo UDCF" class="logo"/>
-    <div class="logo-animation">
-      <h1>Union Equitable des Territoires Français (UETF)</h1>
-      <p><em>"Libre d'être égaux"</em></p>
-      <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&family=Orbitron:wght@500;700&display=swap" rel="stylesheet">
-    </div>
-
-<nav>
-  <a href="#" onclick="showTab('accueil')">Accueil</a>
-  <a href="#" onclick="showTab('presentation')">Présentation</a>
-
-  <div class="dropdown">
-     <button class="dropdown-toggle">Programme ▾</button>
-     <div class="dropdown-menu">
-      <a href="#" onclick="showTab('VI')">VIe république</a>
-      <a href="#" onclick="showTab('programme')">Territorial</a>
-      <a href="#" onclick="showTab('SIRRAT')">Scolaire</a>
-      <a href="#" onclick="showTab('Travail')">Travail</a>
-      <a href="#" onclick="showTab('Judiciaire')">Judiciaire-sécurité</a>
-      <a href="#" onclick="showTab('Infra')">Infrastrcture</a>
-      <a href="#" onclick="showTab('CMN-CRO')">Finances</a>
-      <a href="#" onclick="showTab('autres')">Autres</a>
-      <a href="#" onclick="showTab('equipe')">L'équipe</a>
-    </div>
-  </div>
-
-  <a href="#" onclick="showTab('manifestations')">Manifestations</a>
-  <a href="#" onclick="showTab('rejoindre')">Nous rejoindre</a>
-</nav>
-    
   </header>
 
   <div id="accueil" class="tab-content active">
