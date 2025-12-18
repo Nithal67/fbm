@@ -33,7 +33,6 @@ body::after {
   z-index: -1;
   opacity: 0.5;
   filter: blur(100px);
-  transform: scale(1.2);
   animation: floatGlow 8s ease-in-out infinite alternate;
 }
 
@@ -139,31 +138,34 @@ header h1 {
 header img.logo {
   height: 60px;
   margin-bottom: 0.5rem;
-  transition: transform 0.3s ease;
-}
-
-header img.logo:hover {
-  transform: scale(1.1) rotate(-3deg);
 }
 
 #main-header.hide-on-scroll {
   transform: translateY(-110%);
 }
 
-/* ===================== NAV ===================== */
+/* ===================== NAV (FIX ALIGNEMENT) ===================== */
 nav {
   display: flex;
   justify-content: center;
-  flex-wrap: wrap;
+  align-items: stretch; /* 🔧 FIX HAUTEUR */
   background-color: #004080;
 }
 
+/* Liens ET bouton dropdown */
 nav a,
 nav .dropdown-toggle {
+  display: flex;                 /* 🔧 */
+  align-items: center;           /* 🔧 */
+  justify-content: center;       /* 🔧 */
   padding: 1rem 1.5rem;
   color: white;
   text-decoration: none;
   font-weight: bold;
+  background: none;
+  border: none;
+  font-family: inherit;
+  cursor: pointer;
   border-bottom: 3px solid transparent;
   transition: background 0.3s, border-bottom 0.3s;
 }
@@ -175,9 +177,10 @@ nav .dropdown-toggle:hover {
   border-bottom: 3px solid #ffd60a;
 }
 
-/* Dropdown */
+/* ===================== DROPDOWN ===================== */
 .dropdown {
   position: relative;
+  display: flex; /* 🔧 évite le bouton plus haut */
 }
 
 .dropdown-menu {
@@ -186,13 +189,22 @@ nav .dropdown-toggle:hover {
   top: 100%;
   left: 0;
   background: #004080;
-  border-radius: 12px;
   min-width: 200px;
   flex-direction: column;
+  border-radius: 0 0 12px 12px;
+  z-index: 999;
 }
 
-.dropdown:hover .dropdown-menu {
-  display: flex;
+.dropdown-menu a {
+  padding: 0.9rem 1.2rem;
+  text-align: left;
+}
+
+/* Desktop */
+@media (min-width: 769px) {
+  .dropdown:hover .dropdown-menu {
+    display: flex;
+  }
 }
 
 /* ===================== CONTENT ===================== */
@@ -246,7 +258,6 @@ p, li {
   border-radius: 16px;
   padding: 1.5rem;
   margin-bottom: 2rem;
-  transition: 0.3s;
 }
 
 .team-member img {
@@ -265,7 +276,7 @@ footer {
   margin-top: 4rem;
 }
 
-/* ===================== RESPONSIVE ===================== */
+/* ===================== RESPONSIVE MOBILE ===================== */
 @media (max-width: 768px) {
   html, body {
     padding-top: 90px;
@@ -277,15 +288,22 @@ footer {
 
   nav {
     flex-direction: column;
+    align-items: stretch;
   }
 
-  nav a {
+  nav a,
+  nav .dropdown-toggle {
     width: 100%;
-    text-align: center;
+    border-bottom: 1px solid rgba(255,255,255,0.15);
   }
 
-  .dropdown:hover .dropdown-menu {
-    display: none;
+  .dropdown {
+    flex-direction: column;
+  }
+
+  .dropdown-menu {
+    position: static;
+    border-radius: 0;
   }
 
   .dropdown.active .dropdown-menu {
