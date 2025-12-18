@@ -854,40 +854,47 @@ nav {
   </ul>
 </ol>
   </div>
-  <script>
-  function showTab(tabId) {
-    const tabs = document.querySelectorAll('.tab-content');
-    tabs.forEach(tab => tab.classList.remove('active'));
-    document.getElementById(tabId).classList.add('active');
-  }
+ <script>
+/* ===================== TABS ===================== */
+function showTab(tabId) {
+  document.querySelectorAll('.tab-content').forEach(tab => {
+    tab.classList.remove('active');
+  });
+  document.getElementById(tabId).classList.add('active');
+}
 
-  window.addEventListener('load', () => {
+/* ===================== HEADER HIDE ON SCROLL ===================== */
+window.addEventListener('load', () => {
   const header = document.getElementById('main-header');
   let lastScroll = window.pageYOffset;
 
   window.addEventListener('scroll', () => {
     const currentScroll = window.pageYOffset;
-    console.log('Scroll:', currentScroll, 'Last:', lastScroll);
 
     if (currentScroll > lastScroll && currentScroll > 80) {
-      if (!header.classList.contains('hide-on-scroll')) {
-        console.log('Adding hide-on-scroll');
-        header.classList.add('hide-on-scroll');
-      }
+      header.classList.add('hide-on-scroll');
     } else {
-      if (header.classList.contains('hide-on-scroll')) {
-        console.log('Removing hide-on-scroll');
-        header.classList.remove('hide-on-scroll');
-      }
+      header.classList.remove('hide-on-scroll');
     }
 
-    document.querySelectorAll('.dropdown > button').forEach(btn => {
-  btn.addEventListener('click', () => {
-    btn.parentElement.classList.toggle('active');
-  }};
-}};
-
     lastScroll = currentScroll;
+  });
+
+  /* ===================== DROPDOWN MOBILE ===================== */
+  document.querySelectorAll('.dropdown > button').forEach(button => {
+    button.addEventListener('click', (e) => {
+      e.preventDefault();
+
+      const dropdown = button.parentElement;
+      dropdown.classList.toggle('active');
+
+      // Ferme les autres menus ouverts
+      document.querySelectorAll('.dropdown').forEach(other => {
+        if (other !== dropdown) {
+          other.classList.remove('active');
+        }
+      });
+    });
   });
 });
 </script>
