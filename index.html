@@ -9,8 +9,8 @@
       <p><em>"Libre d'être égaux"</em></p>
     </div>
   </div>
-  <style>
-   * {
+ <style>
+* {
   box-sizing: border-box;
   margin: 0;
   padding: 0;
@@ -24,6 +24,7 @@ html, body {
   padding-top: 105px;
   background-attachment: fixed;
   background-size: cover;
+
 }
 
 /* Deux reflets verts animés */
@@ -117,7 +118,6 @@ body::after {
   padding: 2rem;
 }
 
-/* Header */
 header {
   background: #003366;
   color: white;
@@ -125,7 +125,7 @@ header {
   position: fixed;
   width: 100%;
   top: 0;
-  transition: transform 0.4s ease;
+  transition: transform 0.4s ease; /* <-- ici */
   z-index: 999;
   display: flex;
   flex-direction: column;
@@ -136,7 +136,7 @@ header {
   box-shadow: 0 0 10px #00ff88, 0 0 30px rgba(0, 255, 136, 0.3);
   font-family: 'Orbitron', sans-serif;
   text-align: center;
-  transform: translateY(0);
+  transform: translateY(0); /* état initial */
 }
 
 header.visible {
@@ -161,7 +161,8 @@ header img.logo:hover {
 }
 
 #main-header.hide-on-scroll {
-  transform: translateY(-110%);
+  transform: translateY(-110%); /* pour bien sortir complètement */
+  /* pas besoin de transition ici car elle est déjà sur l’élément principal */
 }
 
 .logo-animation {
@@ -179,8 +180,7 @@ header img.logo:hover {
     transform: scale(1);
   }
 }
-
-/* Navigation */
+/* Assure que tous les éléments dans nav sont alignés */
 nav {
   display: flex;
   justify-content: center;
@@ -208,16 +208,18 @@ nav .dropdown-toggle:hover {
   border-bottom: 3px solid #ffd60a;
 }
 
+/* Dropdown structure */
 .dropdown {
   position: relative;
 }
 
+/* Sous-menu */
 .dropdown-menu {
   display: none;
   position: absolute;
   top: 100%;
   left: 0;
-  background: #004080;
+  background: #004080; /* vert sombre + opacité */
   border-radius: 12px;
   box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
   z-index: 999;
@@ -238,6 +240,7 @@ nav .dropdown-toggle:hover {
   color: #002147;
 }
 
+/* Affiche le menu au survol */
 .dropdown:hover .dropdown-menu {
   display: flex;
 }
@@ -271,7 +274,6 @@ nav .dropdown-toggle:hover {
   }
 }
 
-/* Titres */
 h2 {
   color: #003366;
   font-size: 2.2rem;
@@ -284,14 +286,12 @@ h3 {
   font-size: 1.5rem;
 }
 
-/* Listes */
 ul {
   margin-left: 1.5rem;
   margin-bottom: 1rem;
   list-style: disc;
 }
 
-/* Blockquote */
 blockquote {
   margin: 1.5rem 0;
   padding: 1rem 1.5rem;
@@ -302,13 +302,12 @@ blockquote {
   border-radius: 8px;
 }
 
-/* Uniformes et symboles */
 .uniform-symbols-images {
   display: flex;
   gap: 2rem;
   margin-top: 1.5rem;
   justify-content: center;
-  flex-wrap: wrap;
+  flex-wrap: wrap; /* pour mobile */
 }
 
 .uniform-symbols-images .image-block {
@@ -366,7 +365,7 @@ blockquote {
   box-shadow: 0 4px 10px rgba(0,0,0,0.05);
 }
 
-/* Images globales */
+/* Images */
 img {
   border-radius: 12px;
   box-shadow: 0 4px 12px rgba(0,0,0,0.08);
@@ -410,12 +409,6 @@ footer {
 
   .team-member img {
     margin-bottom: 1rem;
-  }
-
-  .uniform-symbols-images {
-    flex-direction: column;
-    gap: 1rem;
-    align-items: center;
   }
 }
 </style>
