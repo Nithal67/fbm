@@ -54,6 +54,11 @@ body::after {
   to   { transform: scale(1.3); opacity: 0.6; }
 }
 
+.hide-on-scroll {
+  transform: translateY(-100%);
+  transition: transform 0.3s ease;
+}
+
 /* ===================== HEADER ===================== */
 header {
   position: fixed;
@@ -82,6 +87,10 @@ header h1 {
 header img.logo {
   height: 48px;
   margin-bottom: 0.5rem;
+}
+
+header {
+  transition: transform 0.3s ease;
 }
 
 /* ===================== NAV ===================== */
@@ -170,6 +179,20 @@ nav {
   .dropdown.active .dropdown-menu {
     display: flex;
   }
+
+  @media (max-width: 768px) {
+  nav {
+    width: 100%;
+  }
+
+  .nav-links {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .dropdown-menu a {
+    text-align: center;
+  }
 }
 </style>
 </head>
@@ -185,15 +208,14 @@ nav {
       <p><em>"Libre d'être égaux"</em></p>
       <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&family=Orbitron:wght@500;700&display=swap" rel="stylesheet">
     </div>
-  </header>
 
-  <nav>
+<nav>
   <a href="#" onclick="showTab('accueil')">Accueil</a>
   <a href="#" onclick="showTab('presentation')">Présentation</a>
 
   <div class="dropdown">
-    <a href="#" class="dropdown-toggle">Programme ▾</a>
-    <div class="dropdown-menu">
+     <button class="dropdown-toggle">Programme ▾</button>
+     <div class="dropdown-menu">
       <a href="#" onclick="showTab('VI')">VIe république</a>
       <a href="#" onclick="showTab('programme')">Territorial</a>
       <a href="#" onclick="showTab('SIRRAT')">Scolaire</a>
@@ -209,6 +231,8 @@ nav {
   <a href="#" onclick="showTab('manifestations')">Manifestations</a>
   <a href="#" onclick="showTab('rejoindre')">Nous rejoindre</a>
 </nav>
+    
+  </header>
 
   <div id="accueil" class="tab-content active">
     <h2>Bienvenue à l'UETF</h2>
@@ -881,7 +905,7 @@ window.addEventListener('load', () => {
   });
 
   /* ===================== DROPDOWN MOBILE ===================== */
-  document.querySelectorAll('.dropdown > button').forEach(button => {
+  document.querySelectorAll('.dropdown-toggle').forEach(button => {
     button.addEventListener('click', (e) => {
       e.preventDefault();
 
